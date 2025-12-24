@@ -1,0 +1,36 @@
+.sticky-filter-bar {
+  position: sticky;
+  top: -10px;
+  z-index: 10;
+  background: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-buttons-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+}
+
+.filter-button {
+  position: relative;
+}
+
+.filter-badge{
+  position: absolute;
+  top: -4px;
+  right: -16px;
+  min-width: 16px;
+  height: 20px;
+  border-radius: 12px;
+  --background: #FF9800;
+  color: var(--ion-color-light);
+  cursor: pointer;
+}

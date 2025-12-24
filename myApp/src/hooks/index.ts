@@ -1,0 +1,2 @@
+export { useDebouncedSpecialistsCount } from './useDebouncedSpecialistsCount';
+

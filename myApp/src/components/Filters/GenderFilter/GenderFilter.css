@@ -1,0 +1,23 @@
+.gender-filter-container {
+  margin-bottom: 40px;
+}
+
+.gender-filter-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.gender-button-content {
+  padding: 20px 0;
+}
+
+.gender-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.gender-label {
+  font-size: 16px;
+}
+

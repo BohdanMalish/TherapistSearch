@@ -1,0 +1,21 @@
+.provider-slots {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  padding-bottom: 4px;
+}
+
+.provider-slots::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.slot-button {
+  font-size: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+

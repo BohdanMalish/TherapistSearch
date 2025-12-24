@@ -1,0 +1,2 @@
+export { ProviderDescription } from './ProviderDescription';
+

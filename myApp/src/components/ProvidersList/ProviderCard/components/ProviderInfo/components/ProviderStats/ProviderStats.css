@@ -1,0 +1,16 @@
+.provider-stats {
+  display: flex;
+  gap: 24px;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.stat-price {
+  font-size: 16px;
+}
+
+.stat-secondary {
+  color: #666;
+  font-size: 12px;
+}
+

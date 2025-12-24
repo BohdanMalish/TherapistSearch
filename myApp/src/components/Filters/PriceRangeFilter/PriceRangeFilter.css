@@ -1,0 +1,21 @@
+.price-range-container {
+  margin-bottom: 40px;
+}
+
+.price-range-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.price-range-value {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.price-range-slider {
+  padding-top: 16px;
+}
+
