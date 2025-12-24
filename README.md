@@ -40,6 +40,24 @@ npm install
 cd ..
 ```
 
+### 2. Setup Environment Variables
+
+Create environment files from examples:
+
+```bash
+# Backend environment (optional - uses defaults if not created)
+cd myApp-backend
+cp .env.example .env
+cd ..
+
+# Frontend environment (optional - uses defaults if not created)
+cd myApp
+cp .env.example .env
+cd ..
+```
+
+**Note:** If you don't create these files, default values will be used (`http://localhost:3001` for backend, `http://localhost:3001/api` for frontend API URL).
+
 ---
 
 ## 🖥️ Running Backend (Step 1)
@@ -99,16 +117,30 @@ npm run dev
 
 ### Option B: Run on iOS Simulator
 
-#### Step 1: Build web assets
+**Note:** For development, use dev server for hot-reload.
+
+#### Step 1: Start backend (if not running)
+
+```bash
+cd myApp-backend
+npm run start:dev
+```
+
+Keep this terminal running!
+
+#### Step 2: Start frontend dev server (in new terminal)
 
 ```bash
 cd myApp
-npm run build
+npm run dev
 ```
 
-#### Step 2: Sync with iOS
+Keep this terminal running! Frontend will be at `http://localhost:5173`
+
+#### Step 3: Sync with iOS (first time only or after config changes)
 
 ```bash
+# In myApp folder
 npx cap sync ios
 ```
 
@@ -117,7 +149,7 @@ This command:
 - Syncs Capacitor plugins
 - Updates configuration
 
-#### Step 3: Install iOS dependencies (first time only)
+#### Step 4: Install iOS dependencies (first time only)
 
 ```bash
 cd ios/App
@@ -125,7 +157,20 @@ pod install
 cd ../..
 ```
 
-#### Step 4: Open project in Xcode
+#### Step 5: Run on iOS Simulator
+
+**⚠️ IMPORTANT:** Make sure both backend (`npm run start:dev`) and frontend (`npm run dev`) are running before this step!
+
+**Option A: Quick run (recommended)**
+
+```bash
+# In myApp folder (make sure npm run dev is running!)
+npx cap run ios
+```
+
+This will automatically build and launch the app on iOS simulator. The app will connect to your running dev server.
+
+**Option B: Via Xcode**
 
 ```bash
 npx cap open ios
@@ -136,71 +181,32 @@ Or manually:
 open ios/App/App.xcworkspace
 ```
 
-#### Step 5: Run on simulator
-
-In Xcode:
+Then in Xcode:
 1. Select iPhone simulator at the top (e.g., **iPhone 15 Pro**)
 2. Click **▶️ Play** button or press `Cmd + R`
 3. Wait for the app to compile and launch
 
----
-
-## 🔄 Live Reload on iOS (for development)
-
-To see code changes instantly on simulator:
-
-### Method 1: Via dev server (recommended)
-
-**Terminal 1: Backend**
-```bash
-cd myApp-backend
-npm run start:dev
-```
-
-**Terminal 2: Frontend dev server**
-```bash
-cd myApp
-npm run dev
-```
-
-**Terminal 3: iOS**
-```bash
-cd myApp
-
-# Sync and open Xcode
-npx cap sync ios
-npx cap open ios
-```
-
-**In Xcode:** Run the app (▶️)
-
-The app will connect to dev server at `http://localhost:5173`, and all changes will appear automatically! ⚡
-
-**Important:** After development, make sure to remove `server.url` from `capacitor.config.ts` before production build.
-
-### Method 2: Via Capacitor CLI
-
-```bash
-cd myApp
-npx cap run ios --livereload --external
-```
+**Important:** 
+- Backend must be running on `http://localhost:3001`
+- Frontend dev server must be running on `http://localhost:5173`
+- The app will connect to your local servers automatically
+- Changes in code will hot-reload in the simulator!
 
 ---
 
-## 🔧 Configuration
+## 🔄 Development Workflow
 
-### Environment Variables
+When developing with iOS simulator:
 
-#### Backend (.env file in `myApp-backend/`)
+1. **Keep both servers running:**
+   - Terminal 1: `cd myApp-backend && npm run start:dev` (backend)
+   - Terminal 2: `cd myApp && npm run dev` (frontend)
 
-```env
-PORT=3001
-NODE_ENV=development
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000,http://localhost:8100
-```
+2. **Make changes to code** - they will hot-reload automatically in the simulator!
 
-#### Frontend (.env.local file in `myApp/`)
-
-```env
-VITE_API_URL=http://localhost:3001/api
-```
+3. **If you change Capacitor config or add plugins:**
+   ```bash
+   cd myApp
+   npx cap sync ios
+   ```
+   Then rebuild in Xcode.

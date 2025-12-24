@@ -5,10 +5,13 @@ import {
   IonSpinner,
   InfiniteScrollCustomEvent
 } from '@ionic/react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { shallowEqual } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useGetSpecialistsQuery } from '../../store/api/specialistsApi';
 import { setTotalCount } from '../../store/slices/specialistsSlice';
+import { selectFilters } from '../../store/slices/filtersSlice';
+import { DEFAULT_PAGE_SIZE } from '../../store/constants';
 import type { Therapist } from '../../store/slices/specialistsSlice';
 import { ProviderCard } from './ProviderCard';
 
@@ -16,21 +19,23 @@ export const ProvidersList: React.FC = () => {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [allTherapists, setAllTherapists] = useState<Therapist[]>([]);
-  const filters = useAppSelector((state) => state.filters);
+  const filters = useAppSelector(selectFilters);
   const prevFiltersRef = useRef(filters);
 
-  const { data, isLoading, isFetching } = useGetSpecialistsQuery({
+  const queryParams = useMemo(() => ({
     page,
-    limit: 10,
+    limit: DEFAULT_PAGE_SIZE,
     priceMin: filters.priceRange.lower,
     priceMax: filters.priceRange.upper,
     ageMin: filters.ageRange.lower,
     ageMax: filters.ageRange.upper,
     ...(filters.gender && { gender: filters.gender }),
-  });
+  }), [page, filters.priceRange.lower, filters.priceRange.upper, filters.ageRange.lower, filters.ageRange.upper, filters.gender]);
+
+  const { data, isLoading, isFetching } = useGetSpecialistsQuery(queryParams);
 
   useEffect(() => {
-    if (prevFiltersRef.current !== filters) {
+    if (!shallowEqual(prevFiltersRef.current, filters)) {
       setPage(1);
       setAllTherapists([]);
       prevFiltersRef.current = filters;

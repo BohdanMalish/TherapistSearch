@@ -16,7 +16,9 @@ const customBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
   api,
   extraOptions,
 ) => {
-  const baseQuery = fetchBaseQuery({ baseUrl: 'http://localhost:3001/api' });
+  const baseQuery = fetchBaseQuery({ 
+    baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:3001/api' 
+  });
   const result = await baseQuery(args, api, extraOptions);
 
   // If response has Error status, create error

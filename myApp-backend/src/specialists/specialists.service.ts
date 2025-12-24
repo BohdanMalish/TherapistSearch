@@ -13,6 +13,11 @@ export interface GetSpecialistsResponse {
   hasMore: boolean;
 }
 
+// Cache configuration constants
+const CACHE_TTL_MS = 60 * 1000; // 1 minute
+const CACHE_MAX_ENTRIES = 100;
+const CACHE_CLEANUP_INTERVAL_MS = 30 * 1000; // 30 seconds
+
 @Injectable()
 export class SpecialistsService implements OnModuleInit, OnModuleDestroy {
   private queryCache: Map<string, {
@@ -20,14 +25,14 @@ export class SpecialistsService implements OnModuleInit, OnModuleDestroy {
     timestamp: number;
   }> = new Map();
   
-  private readonly QUERY_CACHE_TTL = 60000; 
-  private readonly MAX_CACHE_SIZE = 100;
+  private readonly QUERY_CACHE_TTL = CACHE_TTL_MS;
+  private readonly MAX_CACHE_SIZE = CACHE_MAX_ENTRIES;
   private cleanupInterval?: NodeJS.Timeout;
 
   constructor(private readonly databaseService: DatabaseService) {}
 
   onModuleInit() {
-    this.cleanupInterval = setInterval(() => this.cleanExpiredCache(), 30000);
+    this.cleanupInterval = setInterval(() => this.cleanExpiredCache(), CACHE_CLEANUP_INTERVAL_MS);
   }
 
   onModuleDestroy() {

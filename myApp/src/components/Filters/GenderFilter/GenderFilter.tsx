@@ -1,12 +1,12 @@
 import { IonSegment, IonSegmentButton } from '@ionic/react';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { setGender } from '../../../store/slices/filtersSlice';
+import { setGender, selectGender } from '../../../store/slices/filtersSlice';
 import { Gender } from '../../../store/types';
 import './GenderFilter.css';
 
 export const GenderFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { gender } = useAppSelector((state) => state.filters);
+  const gender = useAppSelector(selectGender);
 
   return (
     <div className="gender-filter-container">

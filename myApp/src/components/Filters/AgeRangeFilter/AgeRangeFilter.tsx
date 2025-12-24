@@ -1,12 +1,13 @@
 import { IonRange, RangeChangeEventDetail } from '@ionic/react';
 import { IonRangeCustomEvent } from '@ionic/core';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { setAgeRange } from '../../../store/slices/filtersSlice';
+import { setAgeRange, selectAgeRange } from '../../../store/slices/filtersSlice';
+import { DEFAULT_AGE_MIN, AGE_RANGE_MAX } from '../../../store/constants';
 import './AgeRangeFilter.css';
 
 export const AgeRangeFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { ageRange } = useAppSelector((state) => state.filters);
+  const ageRange = useAppSelector(selectAgeRange);
 
   const handleRangeChange = (e: IonRangeCustomEvent<RangeChangeEventDetail>) => {
     const value = e.detail.value as { lower: number; upper: number };
@@ -23,8 +24,8 @@ export const AgeRangeFilter: React.FC = () => {
       </div>
       <IonRange
         dualKnobs={true}
-        min={18}
-        max={70}
+        min={DEFAULT_AGE_MIN}
+        max={AGE_RANGE_MAX}
         value={ageRange}
         onIonChange={handleRangeChange}
         pin={true}

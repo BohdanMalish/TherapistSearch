@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { Gender } from '../types';
 import { 
   DEFAULT_PRICE_MIN, 
@@ -48,25 +48,51 @@ export const filtersSlice = createSlice({
 
 export const { setPriceRange, setAgeRange, setGender, clearFilters } = filtersSlice.actions;
 
-export const selectActiveFiltersCount = (state: { filters: FiltersState }) => {
-  let count = 0;
-  
-  if (state.filters.priceRange.lower !== initialState.priceRange.lower || 
-      state.filters.priceRange.upper !== initialState.priceRange.upper) {
-    count++;
+// Memoized selectors
+const selectFiltersState = (state: { filters: FiltersState }) => state.filters;
+
+export const selectFilters = createSelector(
+  [selectFiltersState],
+  (filters) => filters
+);
+
+export const selectPriceRange = createSelector(
+  [selectFiltersState],
+  (filters) => filters.priceRange
+);
+
+export const selectAgeRange = createSelector(
+  [selectFiltersState],
+  (filters) => filters.ageRange
+);
+
+export const selectGender = createSelector(
+  [selectFiltersState],
+  (filters) => filters.gender
+);
+
+export const selectActiveFiltersCount = createSelector(
+  [selectFiltersState],
+  (filters) => {
+    let count = 0;
+    
+    if (filters.priceRange.lower !== initialState.priceRange.lower || 
+        filters.priceRange.upper !== initialState.priceRange.upper) {
+      count++;
+    }
+    
+    if (filters.ageRange.lower !== initialState.ageRange.lower || 
+        filters.ageRange.upper !== initialState.ageRange.upper) {
+      count++;
+    }
+    
+    if (filters.gender !== initialState.gender) {
+      count++;
+    }
+    
+    return count;
   }
-  
-  if (state.filters.ageRange.lower !== initialState.ageRange.lower || 
-      state.filters.ageRange.upper !== initialState.ageRange.upper) {
-    count++;
-  }
-  
-  if (state.filters.gender !== initialState.gender) {
-    count++;
-  }
-  
-  return count;
-};
+);
 
 export default filtersSlice.reducer;
 

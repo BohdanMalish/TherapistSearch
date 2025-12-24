@@ -83,17 +83,14 @@ export class DatabaseService implements OnModuleInit {
 
  
   async createTherapist(therapist: Omit<Therapist, 'id'>): Promise<Therapist> {
+    // Note: In production, would use UUID or database-generated IDs
+    // to avoid race conditions with concurrent requests
     this.idCounter++;
     const newTherapist: Therapist = { ...therapist, id: this.idCounter };
     
-    try {
-      this.db.get('therapists').push(newTherapist).write();
-      this.refreshCache();
-      return newTherapist;
-    } catch (error) {
-      this.idCounter--;
-      throw error;
-    }
+    this.db.get('therapists').push(newTherapist).write();
+    this.refreshCache();
+    return newTherapist;
   }
 
   async updateTherapist(id: number, updates: Partial<Therapist>): Promise<Therapist | null> {

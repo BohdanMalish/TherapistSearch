@@ -1,12 +1,13 @@
 import { IonRange, RangeChangeEventDetail } from '@ionic/react';
 import { IonRangeCustomEvent } from '@ionic/core';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { setPriceRange } from '../../../store/slices/filtersSlice';
+import { setPriceRange, selectPriceRange } from '../../../store/slices/filtersSlice';
+import { DEFAULT_PRICE_MIN, DEFAULT_PRICE_MAX, PRICE_STEP } from '../../../store/constants';
 import './PriceRangeFilter.css';
 
 export const PriceRangeFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { priceRange } = useAppSelector((state) => state.filters);
+  const priceRange = useAppSelector(selectPriceRange);
 
   const handleRangeChange = (e: IonRangeCustomEvent<RangeChangeEventDetail>) => {
     const value = e.detail.value as { lower: number; upper: number };
@@ -23,9 +24,9 @@ export const PriceRangeFilter: React.FC = () => {
       </div>
       <IonRange
         dualKnobs={true}
-        min={0}
-        max={3000}
-        step={50}
+        min={DEFAULT_PRICE_MIN}
+        max={DEFAULT_PRICE_MAX}
+        step={PRICE_STEP}
         value={priceRange}
         onIonChange={handleRangeChange}
         pin={true}

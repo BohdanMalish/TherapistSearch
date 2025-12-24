@@ -2,9 +2,10 @@ import { useEffect, useRef } from 'react';
 import { useAppDispatch } from '../store/hooks';
 import { useLazyGetSpecialistsCountQuery } from '../store/api/specialistsApi';
 import { setTotalCount } from '../store/slices/specialistsSlice';
+import { COUNT_DEBOUNCE_DELAY } from '../store/constants';
 import { FiltersState } from '../store/slices/filtersSlice';
 
-export const useDebouncedSpecialistsCount = (filters: FiltersState, delay: number = 500) => {
+export const useDebouncedSpecialistsCount = (filters: FiltersState, delay: number = COUNT_DEBOUNCE_DELAY) => {
   const dispatch = useAppDispatch();
   const [triggerGetCount] = useLazyGetSpecialistsCountQuery();
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);

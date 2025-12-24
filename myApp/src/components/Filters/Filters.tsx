@@ -4,6 +4,7 @@ import { GenderFilter } from './GenderFilter';
 import { AgeRangeFilter } from './AgeRangeFilter';
 import { FiltersActions } from './FiltersActions';
 import { useAppSelector } from '../../store/hooks';
+import { selectFilters } from '../../store/slices/filtersSlice';
 import { useDebouncedSpecialistsCount } from '../../hooks';
 
 interface FiltersProps {
@@ -11,7 +12,7 @@ interface FiltersProps {
 }
 
 export const Filters: React.FC<FiltersProps> = ({ onApply }) => {
-  const filters = useAppSelector((state) => state.filters);
+  const filters = useAppSelector(selectFilters);
   
   useDebouncedSpecialistsCount(filters);
 
